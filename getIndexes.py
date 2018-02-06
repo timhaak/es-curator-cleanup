@@ -87,6 +87,18 @@ data = {'actions': {}}
 index_count = 1
 for month_index in index_list:
     data['actions'][index_count] = {
+        'description': 'Create target index ' + month_index,
+        'action': 'create_index',
+        'options': {
+            'disable_action': False,
+            'name': month_index,
+            'continue_if_exception': True,
+        }
+    }
+
+    index_count += 1
+
+    data['actions'][index_count] = {
         'description': 'Reindex ' + month_index,
         'action': 'reindex',
         'options': {
@@ -111,7 +123,46 @@ for month_index in index_list:
             {'filtertype': 'none'}
         ]
     }
+
     index_count += 1
+
+    for day_index in index_list[month_index]:
+        data['actions'][index_count] = {
+            'description': 'Delete index ' + day_index + ' moved to ' + month_index,
+            'action': 'delete_indices',
+            'options': {
+                'disable_action': False,
+                'continue_if_exception': True,
+                'ignore_empty_list': True,
+                'timeout_override': None,
+            },
+            'filters': [
+                {
+                    'filtertype': 'pattern',
+                    'kind': 'regex',
+                    'value': '^' + re.escape(day_index) + '$',
+                }
+            ]
+        }
+        index_count += 1
+        data['actions'][index_count] = {
+            'description': 'Delete index ' + day_index + ' moved to ' + month_index,
+            'action': 'delete_indices',
+            'options': {
+                'disable_action': False,
+                'continue_if_exception': True,
+                'ignore_empty_list': True,
+                'timeout_override': None,
+            },
+            'filters': [
+                {
+                    'filtertype': 'pattern',
+                    'kind': 'regex',
+                    'value': '^' + re.escape(day_index) + '$',
+                }
+            ]
+        }
+        index_count += 1
 
 with open(CURATOR_ACTION, 'w') as outfile:
     yaml.dump(data, outfile, default_flow_style=False)
@@ -125,11 +176,11 @@ curator_config = {
     'client': {
         'hosts': [ES_SERVER, ],
         'port': ES_SERVER_PORT,
-        'url_prefix': '',
+        'url_prefix': None,
         'use_ssl': False,
-        'certificate': '',
-        'client_cert': '',
-        'client_key': '',
+        'certificate': None,
+        'client_cert': None,
+        'client_key': None,
         'ssl_no_validate': False,
         'http_auth': HTTP_AUTH_CREDENTIALS,
         'timeout': 30,
@@ -137,7 +188,7 @@ curator_config = {
     },
     'logging': {
         'loglevel': 'INFO',
-        'logfile': '',
+        'logfile': None,
         'logformat': 'default',
         'blacklist': ['elasticsearch', 'urllib3'],
     }

@@ -105,4 +105,4 @@ venv.bak/
 .mypy_cache/
 
 curator_action.yml
-curator_config2.yml
+curator_config.yml
