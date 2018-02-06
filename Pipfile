@@ -1,0 +1,24 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[packages]
+
+certifi = "==2018.1.18"
+click = "==6.7"
+elasticsearch = "==6.1.1"
+elasticsearch-curator = "==5.4.1"
+elasticsearch-dsl = "==6.1.0"
+ipaddress = "==1.0.19"
+python-dateutil = "==2.6.1"
+pyyaml = "==3.12"
+"urllib3" = "==1.22"
+voluptuous = "==0.10.5"
+python-dotenv = "*"
+
+
+[dev-packages]
+
