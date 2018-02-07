@@ -13,6 +13,7 @@ CURATOR_ACTION = 'curator_action.yml'
 load_dotenv(find_dotenv())
 
 FILTER_PREFIX = os.getenv("FILTER_PREFIX", "")
+LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
 
 MAX_DAYS = int(os.getenv("MAX_DAYS", 3))
 
@@ -119,11 +120,11 @@ for month_index in index_list:
             'disable_action': False,
             'continue_if_exception': False,
             'ignore_empty_list': True,
-            'timeout': 90,
+            'timeout': 300,
             'wait_interval': 9,
             'max_wait': -1,
             'requests_per_second': -1,
-            'slices': 3,
+            'slices': 9,
             'request_body': {
                 'source': {
                     'index': index_list[month_index]
@@ -149,32 +150,18 @@ for month_index in index_list:
                 'disable_action': False,
                 'continue_if_exception': False,
                 'ignore_empty_list': True,
-                'timeout_override': None,
+                'timeout_override': 300,
             },
             'filters': [
                 {
                     'filtertype': 'pattern',
                     'kind': 'regex',
                     'value': '^' + re.escape(day_index) + '$',
-                }
-            ]
-        }
-        index_count += 1
-        data['actions'][index_count] = {
-            'description': 'Delete index ' + day_index +
-            ' moved to ' + month_index,
-            'action': 'delete_indices',
-            'options': {
-                'disable_action': False,
-                'continue_if_exception': True,
-                'ignore_empty_list': True,
-                'timeout_override': None,
-            },
-            'filters': [
+                },
                 {
                     'filtertype': 'pattern',
-                    'kind': 'regex',
-                    'value': '^' + re.escape(day_index) + '$',
+                    'kind': 'prefix',
+                    'value': day_index,
                 }
             ]
         }
@@ -203,7 +190,7 @@ curator_config = {
         'master_only': False,
     },
     'logging': {
-        'loglevel': 'DEBUG',
+        'loglevel': LOG_LEVEL,
         'logfile': None,
         'logformat': 'default',
         'blacklist': ['elasticsearch', 'urllib3'],
