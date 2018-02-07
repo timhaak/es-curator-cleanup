@@ -5,11 +5,14 @@ import yaml
 from dotenv import load_dotenv, find_dotenv
 import os
 import sys
+from colorama import Fore, Style
 
 CONFIG_FILE_NAME = 'curator_config.yml'
 CURATOR_ACTION = 'curator_action.yml'
 
 load_dotenv(find_dotenv())
+
+FILTER_PREFIX = os.getenv("FILTER_PREFIX", "")
 
 MAX_DAYS = int(os.getenv("MAX_DAYS", 3))
 
@@ -33,8 +36,13 @@ if ES_SERVER == '' or ES_SERVER_PORT == '':
 
 ES_SERVER_URL = "http://" + ES_SERVER + ":" + ES_SERVER_PORT + "/"
 
-print("Connecting to " + ES_SERVER_URL)
-print("Looking for indexes older than " + str(MAX_DAYS) + ' days')
+print("Connecting to " + Fore.GREEN + ES_SERVER_URL + Style.RESET_ALL)
+print("Looking for indexes older than " +
+      Fore.RED + str(MAX_DAYS) + Style.RESET_ALL + ' days')
+
+if FILTER_PREFIX != '':
+    print("Only looking for indexes sthat start with " +
+          Fore.MAGENTA + FILTER_PREFIX + Style.RESET_ALL)
 
 if MAX_INDEXES > 0:
     print("Doing all indexes")
@@ -62,7 +70,9 @@ now = datetime.now().date()
 index_list = {}
 
 for index in sorted_indexes:
-    regexp = re.compile(r'(.*)-(\d+)\.(\d+)\.(\d+)')
+    matchRegularExpresion = r"(" + re.escape(FILTER_PREFIX) + \
+        ".*)-(\d+)\.(\d+)\.(\d+)"
+    regexp = re.compile(matchRegularExpresion)
     match = regexp.search(index)
     if match:
         index_date = date(

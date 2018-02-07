@@ -18,6 +18,7 @@ pyyaml = "==3.12"
 "urllib3" = "==1.22"
 voluptuous = "==0.10.5"
 python-dotenv = "*"
+colorama = "*"
 
 
 [dev-packages]
