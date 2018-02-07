@@ -73,10 +73,13 @@ for index in sorted_indexes:
         delta = now - index_date
         if delta.days > MAX_DAYS:
             # print(index)
-            month_index = match.group(1) + '-' + match.group(2) + '.' + match.group(3)
+            month_index = match.group(1) + '-' + match.group(2) + '.' + \
+                match.group(3)
             # print(month_index)
             if month_index in index_list:
-                if MAX_SUB_INDEXES <= 0 or len(index_list[month_index]) < MAX_SUB_INDEXES:
+                if MAX_SUB_INDEXES <= 0 or \
+                    len(index_list[month_index]) < \
+                        MAX_SUB_INDEXES:
                     index_list[month_index].append(index)
             else:
                 index_list[month_index] = [index]
@@ -99,11 +102,12 @@ for month_index in index_list:
     index_count += 1
 
     data['actions'][index_count] = {
-        'description': 'Reindex ' + month_index,
+        'description': '\nReindex \n\t' + str(index_list[month_index]) +
+        '\n to \n\t' + month_index,
         'action': 'reindex',
         'options': {
             'disable_action': False,
-            'continue_if_exception': True,
+            'continue_if_exception': False,
             'ignore_empty_list': True,
             'timeout': 90,
             'wait_interval': 9,
@@ -128,11 +132,12 @@ for month_index in index_list:
 
     for day_index in index_list[month_index]:
         data['actions'][index_count] = {
-            'description': 'Delete index ' + day_index + ' moved to ' + month_index,
+            'description': 'Delete index ' + day_index +
+            ' moved to ' + month_index,
             'action': 'delete_indices',
             'options': {
                 'disable_action': False,
-                'continue_if_exception': True,
+                'continue_if_exception': False,
                 'ignore_empty_list': True,
                 'timeout_override': None,
             },
@@ -146,7 +151,8 @@ for month_index in index_list:
         }
         index_count += 1
         data['actions'][index_count] = {
-            'description': 'Delete index ' + day_index + ' moved to ' + month_index,
+            'description': 'Delete index ' + day_index +
+            ' moved to ' + month_index,
             'action': 'delete_indices',
             'options': {
                 'disable_action': False,
@@ -174,7 +180,7 @@ else:
 
 curator_config = {
     'client': {
-        'hosts': [ES_SERVER, ],
+        'hosts': [ES_SERVER],
         'port': ES_SERVER_PORT,
         'url_prefix': None,
         'use_ssl': False,
