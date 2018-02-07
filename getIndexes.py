@@ -55,6 +55,8 @@ if MAX_INDEXES > 0:
 else:
     print("Doing " + str(MAX_SUB_INDEXES) + " sub indexes per index")
 
+sys.exit()
+
 if ES_SERVER_USERNAME == "":
     es = Elasticsearch(
         ES_SERVER_URL
