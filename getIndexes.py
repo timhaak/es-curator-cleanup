@@ -203,7 +203,7 @@ curator_config = {
         'master_only': False,
     },
     'logging': {
-        'loglevel': 'INFO',
+        'loglevel': 'DEBUG',
         'logfile': None,
         'logformat': 'default',
         'blacklist': ['elasticsearch', 'urllib3'],
