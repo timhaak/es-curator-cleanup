@@ -1,12 +1,14 @@
-from datetime import date, datetime
-from elasticsearch import Elasticsearch
-import re
-import yaml
-from dotenv import load_dotenv, find_dotenv
-import os
-import sys
-from colorama import Fore, Style
 import html
+import os
+import re
+import sys
+import time
+from datetime import date, datetime
+
+import yaml
+from colorama import Fore, Style
+from dotenv import load_dotenv, find_dotenv
+from elasticsearch import Elasticsearch
 
 load_dotenv(find_dotenv())
 
@@ -49,6 +51,10 @@ if MAX_INDEXES > 0:
     print("Doing all indexes")
 else:
     print("Doing " + str(MAX_INDEXES) + " indexes")
+
+while True:
+    time.sleep(5)
+    print(datetime.now())
 
 if ES_SERVER_USERNAME == "":
     es = Elasticsearch(
@@ -149,7 +155,7 @@ for month_index in index_list:
                 }
             },
             'parallelism': 1,
-            'backoffLimit': 4
+            'backoffLimit': 1
         }
     }
     with open(CONFIG_FILE_NAME + safeDNSName + '.yml', 'w') as outfile:

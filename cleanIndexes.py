@@ -124,7 +124,7 @@ for month_index in index_list:
             'wait_interval': 9,
             'max_wait': -1,
             'requests_per_second': -1,
-            'slices': 9,
+            'slices': 3,
             'request_body': {
                 'source': {
                     'index': index_list[month_index]
