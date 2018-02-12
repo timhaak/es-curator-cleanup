@@ -106,3 +106,4 @@ venv.bak/
 
 curator_action.yml
 curator_config.yml
+curator-job*.yml

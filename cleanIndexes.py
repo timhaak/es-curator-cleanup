@@ -186,7 +186,7 @@ curator_config = {
         'client_key': None,
         'ssl_no_validate': False,
         'http_auth': HTTP_AUTH_CREDENTIALS,
-        'timeout': 30,
+        'timeout': 300,
         'master_only': False,
     },
     'logging': {
