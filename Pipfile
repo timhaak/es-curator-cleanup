@@ -19,6 +19,8 @@ pyyaml = "==3.12"
 voluptuous = "==0.10.5"
 python-dotenv = "*"
 colorama = "*"
+rq = "*"
+redis = "*"
 
 
 [dev-packages]
