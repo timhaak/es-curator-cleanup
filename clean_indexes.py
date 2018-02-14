@@ -34,6 +34,11 @@ REDIS_HOST = os.getenv("REDIS_HOST", "redis")
 REDIS_PORT = os.getenv("REDIS_PORT", "6379")
 REDIS_DB = os.getenv("REDIS_DB", "0")
 
+WORKER_TIMEOUT = int(os.getenv("WORKER_TIMEOUT", "3600"))
+WORKER_QUEUE_TIMEOUT = int(os.getenv("WORKER_QUEUE_TIMEOUT", "86400"))
+WORKER_RESULT_TIMEOUT = int(os.getenv("WORKER_RESULT_TIMEOUT", "86400"))
+WORKER_LOGGING_LEVEL = os.getenv("WORKER_LOGGING_LEVEL", "INFO")
+
 
 def createJob(
     es_server_host='localhost',
@@ -115,7 +120,10 @@ def createJob(
     )
 
     redis_conn = redis.StrictRedis(host=redis_host, port=redis_port, db=redis_db)
-    queue = Queue(connection=redis_conn)
+    queue = Queue(
+        default_timeout=WORKER_TIMEOUT,
+        connection=redis_conn
+    )
 
     for month_index in index_list:
         print('Creating job to consolidate ' + Fore.BLUE + month_index + Style.RESET_ALL + ' with ' +
@@ -134,16 +142,21 @@ def createJob(
         ])
 
         job = queue.enqueue(
-            ConsolidateIndex.consolidate_index,
-            es_server_host,
-            es_server_port,
-            es_server_username,
-            es_server_password,
-            max_days,
-            max_indexes,
-            max_sub_index,
-            month_index,
-            LOG_LEVEL,
+            func=ConsolidateIndex.consolidate_index,
+            args=(
+                es_server_host,
+                es_server_port,
+                es_server_username,
+                es_server_password,
+                max_days,
+                max_indexes,
+                max_sub_index,
+                month_index,
+                LOG_LEVEL
+            ),
+            timeout=WORKER_TIMEOUT,
+            result_ttl=WORKER_RESULT_TIMEOUT,
+            ttl=WORKER_QUEUE_TIMEOUT
         )
 
         print(job.result)
