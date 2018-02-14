@@ -190,15 +190,17 @@ def consolidate_index(
     with open(curator_config_file, 'w') as outfile:
         yaml.dump(curator_config, outfile, default_flow_style=False)
 
-    result = subprocess.Popen(
+    process = subprocess.Popen(
         '/usr/local/bin/curator --config /es-curator-cleanup/curator_config.yml /es-curator-cleanup/curator_action.yml',
         shell=True,
         stdout=subprocess.PIPE
     )
+
     while True:
-        out = result.stderr.read(1)
-        if out == '' and result.poll() is None:
+        output = process.stdout.readline()
+        if output == '' and process.poll() is not None:
             break
-        if out != '':
-            sys.stdout.write(out)
-            sys.stdout.flush()
+        if output:
+            print(output.strip())
+    rc = process.poll()
+    return rc
