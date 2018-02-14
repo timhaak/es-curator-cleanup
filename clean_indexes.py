@@ -112,6 +112,11 @@ def createJob(
                 else:
                     index_list[month_index] += 1
 
+    print(
+        'Connecting to  ' + Fore.CYAN + redis_host + Style.RESET_ALL + ' redis on port ' +
+        Fore.GREEN + redis_port + Style.RESET_ALL
+    )
+
     redis_conn = redis.StrictRedis(host=redis_host, port=redis_port, db=redis_db)
     queue = Queue(connection=redis_conn)
 
