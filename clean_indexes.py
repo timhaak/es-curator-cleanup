@@ -141,7 +141,7 @@ def createJob(
             month_index
         ])
 
-        job = queue.enqueue(
+        job = queue.enqueue_call(
             func=ConsolidateIndex.consolidate_index,
             args=(
                 es_server_host,
