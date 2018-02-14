@@ -15,7 +15,8 @@ def consolidate_index(
     max_days=3,
     max_indexes=1,
     max_sub_index=1,
-    index_prefix=''
+    index_prefix='',
+    log_level='INFO'
 ):
     curator_config_file = 'curator_config.yml'
     curator_action_file = 'curator_action.yml'
@@ -179,7 +180,7 @@ def consolidate_index(
             'master_only': False,
         },
         'logging': {
-            'loglevel': LOG_LEVEL,
+            'loglevel': log_level,
             'logfile': None,
             'logformat': 'default',
             'blacklist': ['elasticsearch', 'urllib3'],

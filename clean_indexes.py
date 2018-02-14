@@ -142,7 +142,8 @@ def createJob(
             max_days,
             max_indexes,
             max_sub_index,
-            month_index
+            month_index,
+            LOG_LEVEL,
         )
 
         print(job.result)
