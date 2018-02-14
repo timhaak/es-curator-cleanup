@@ -9,9 +9,6 @@ import redis
 from rq import Queue
 from locallib import ConsolidateIndex
 
-CONFIG_FILE_NAME = 'curator_config.yml'
-CURATOR_ACTION = 'curator_action.yml'
-
 load_dotenv(find_dotenv())
 
 FILTER_PREFIX = os.getenv("FILTER_PREFIX", "")

@@ -17,7 +17,10 @@ def consolidate_index(
     max_sub_index=1,
     index_prefix=''
 ):
-    es_server_port = str(es_server_port);
+    curator_config_file = 'curator_config.yml'
+    curator_action_file = 'curator_action.yml'
+
+    es_server_port = str(es_server_port)
 
     if es_server_host == '' or es_server_port == '':
         print("You need to set the env variables for EsServer and EsServerPort")
@@ -153,7 +156,7 @@ def consolidate_index(
             }
             index_count += 1
 
-    with open(CURATOR_ACTION, 'w') as outfile:
+    with open(curator_action_file, 'w') as outfile:
         yaml.dump(data, outfile, default_flow_style=False)
 
     if es_server_username != '':
@@ -183,7 +186,7 @@ def consolidate_index(
         }
     }
 
-    with open(CONFIG_FILE_NAME, 'w') as outfile:
+    with open(curator_config_file, 'w') as outfile:
         yaml.dump(curator_config, outfile, default_flow_style=False)
 
     result = subprocess.Popen(
