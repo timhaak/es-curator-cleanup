@@ -7,7 +7,7 @@ import sys
 from colorama import Fore, Style
 import redis
 from rq import Queue
-from lib import ConsolidateIndex
+from locallib import ConsolidateIndex
 
 CONFIG_FILE_NAME = 'curator_config.yml'
 CURATOR_ACTION = 'curator_action.yml'
