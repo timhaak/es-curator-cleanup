@@ -14,7 +14,7 @@ def consolidate_index(
     es_server_password='',
     max_days=3,
     max_indexes=1,
-    max_sub_index=1,
+    max_sub_index=-1,
     index_prefix='',
     log_level='INFO'
 ):

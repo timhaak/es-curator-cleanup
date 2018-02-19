@@ -20,7 +20,7 @@ MAX_DAYS = int(os.getenv("MAX_DAYS", 3))
 MAX_INDEXES = int(os.getenv("MAX_INDEXES", 1))
 
 # Set less than 0 to do all
-MAX_SUB_INDEXES = int(os.getenv("MAX_SUB_INDEXES", 1))
+MAX_SUB_INDEXES = int(os.getenv("MAX_SUB_INDEXES", -1))
 
 # Set less than 0 to do all
 ES_SERVER = os.getenv("ES_SERVER", '')

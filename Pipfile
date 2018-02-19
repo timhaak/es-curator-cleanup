@@ -21,6 +21,8 @@ python-dotenv = "*"
 colorama = "*"
 rq = "*"
 redis = "*"
+celery = "*"
+flower = "*"
 
 
 [dev-packages]
