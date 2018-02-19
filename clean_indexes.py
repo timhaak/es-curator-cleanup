@@ -120,11 +120,11 @@ def createJob(
         Fore.GREEN + redis_port + Style.RESET_ALL
     )
 
-    redis_conn = redis.StrictRedis(host=redis_host, port=redis_port, db=redis_db)
-    queue = Queue(
-        default_timeout=WORKER_TIMEOUT,
-        connection=redis_conn
-    )
+    # redis_conn = redis.StrictRedis(host=redis_host, port=redis_port, db=redis_db)
+    # queue = Queue(
+    #     default_timeout=WORKER_TIMEOUT,
+    #     connection=redis_conn
+    # )
 
     for month_index in index_list:
         print('Creating job to consolidate ' + Fore.BLUE + month_index + Style.RESET_ALL + ' with ' +
