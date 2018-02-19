@@ -69,15 +69,15 @@ def createJob(
         print("Only looking for indexes sthat start with " +
               Fore.MAGENTA + index_prefix + Style.RESET_ALL)
 
-    if max_indexes > 0:
+    if max_indexes < 0:
         print("Doing all indexes")
     else:
         print("Doing " + str(max_indexes) + " indexes")
 
-    if max_indexes > 0:
+    if max_sub_index < 0:
         print("Doing all sub indexes")
     else:
-        print("Doing " + str(max_sub_index) + " sub indexes per index")
+        print("Doing " + str(max_sub_index) + " sub indexes per index. Done on worker")
 
     if es_server_username == "":
         es = Elasticsearch(
@@ -113,6 +113,8 @@ def createJob(
                     index_list[month_index] = 1
                 else:
                     index_list[month_index] += 1
+            if -1 < max_indexes < len(index_list):
+                break
 
     print(
         'Connecting to  ' + Fore.CYAN + redis_host + Style.RESET_ALL + ' redis on port ' +
@@ -129,17 +131,17 @@ def createJob(
         print('Creating job to consolidate ' + Fore.BLUE + month_index + Style.RESET_ALL + ' with ' +
               Fore.BLUE + str(index_list[month_index]) + Style.RESET_ALL + ' indexes to consolidate')
 
-        print([
-            ConsolidateIndex,
-            es_server_host,
-            es_server_port,
-            es_server_username,
-            es_server_password,
-            max_days,
-            max_indexes,
-            max_sub_index,
-            month_index
-        ])
+        # print([
+        #     ConsolidateIndex,
+        #     es_server_host,
+        #     es_server_port,
+        #     es_server_username,
+        #     es_server_password,
+        #     max_days,
+        #     max_indexes,
+        #     max_sub_index,
+        #     month_index
+        # ])
 
         job = queue.enqueue_call(
             func=ConsolidateIndex.consolidate_index,
