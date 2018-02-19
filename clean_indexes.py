@@ -7,7 +7,7 @@ from colorama import Fore, Style
 from dotenv import load_dotenv, find_dotenv
 from elasticsearch import Elasticsearch
 
-from locallib.tasks import consolidate_index
+from tasks import consolidate_index
 
 load_dotenv(find_dotenv())
 
