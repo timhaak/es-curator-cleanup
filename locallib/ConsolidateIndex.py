@@ -57,7 +57,7 @@ def consolidate_index(
             http_auth=(es_server_username, es_server_password)
         )
 
-    indexes = es.indices.get_alias().keys()
+    indexes = es.indices.get_alias(index=index_prefix + '*').keys()
     sorted_indexes = sorted(indexes)
     now = datetime.now().date()
     index_list = {}

@@ -66,7 +66,7 @@ def createJob(
           Fore.RED + str(max_days) + Style.RESET_ALL + ' days')
 
     if index_prefix != '':
-        print("Only looking for indexes sthat start with " +
+        print("Only looking for indexes that start with " +
               Fore.MAGENTA + index_prefix + Style.RESET_ALL)
 
     if max_indexes < 0:
@@ -89,7 +89,7 @@ def createJob(
             http_auth=(es_server_username, es_server_password)
         )
 
-    indexes = es.indices.get_alias().keys()
+    indexes = es.indices.get_alias(index=index_prefix + '*').keys()
     sorted_indexes = sorted(indexes)
     now = datetime.now().date()
     index_list = {}
