@@ -5,8 +5,43 @@ import yaml
 import sys
 from colorama import Fore, Style
 import subprocess
+from dotenv import load_dotenv, find_dotenv
+import os
+from celery import Celery
+
+load_dotenv(find_dotenv())
+
+REDIS_HOST = os.getenv("REDIS_HOST", "redis")
+REDIS_PORT = os.getenv("REDIS_PORT", "6379")
+REDIS_DB = os.getenv("REDIS_DB", "0")
+
+WORKER_TIMEOUT = int(os.getenv("WORKER_TIMEOUT", "3600"))
+WORKER_QUEUE_TIMEOUT = int(os.getenv("WORKER_QUEUE_TIMEOUT", "86400"))
+WORKER_RESULT_TIMEOUT = int(os.getenv("WORKER_RESULT_TIMEOUT", "86400"))
+WORKER_LOGGING_LEVEL = os.getenv("WORKER_LOGGING_LEVEL", "INFO")
+
+JOB_QUEUE_NAME = os.getenv("JOB_QUEUE_NAME", "curator")
+
+redis_url = "redis://" + REDIS_HOST + ":" + REDIS_PORT + "/" + REDIS_DB
+
+app = Celery(JOB_QUEUE_NAME, backend=redis_url, broker=redis_url)
+
+app.conf.update(
+    task_serializer='json',
+    accept_content=['json'],  # Ignore other content
+    result_serializer='json',
+    timezone='Africa/Johannesburg',
+    enable_utc=True,
+    result_backend=redis_url,
+    result_expires=WORKER_RESULT_TIMEOUT,
+)
+
+app.conf.broker_transport_options = {
+    'visibility_timeout': WORKER_QUEUE_TIMEOUT
+}
 
 
+@app.task
 def consolidate_index(
     es_server_host='localhost',
     es_server_port='9200',

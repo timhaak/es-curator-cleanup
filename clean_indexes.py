@@ -6,7 +6,6 @@ import os
 import sys
 from colorama import Fore, Style
 import redis
-from rq import Queue
 from locallib import ConsolidateIndex
 
 load_dotenv(find_dotenv())
@@ -46,8 +45,8 @@ def createJob(
     es_server_username='',
     es_server_password='',
     max_days=3,
-    max_indexes=1,
-    max_sub_index=1,
+    max_indexes=-1,
+    max_sub_index=-1,
     index_prefix='',
     redis_host='redis',
     redis_port='6379',
@@ -142,6 +141,18 @@ def createJob(
         #     max_sub_index,
         #     month_index
         # ])
+
+        ConsolidateIndex.consolidate_index(
+            es_server_host,
+            es_server_port,
+            es_server_username,
+            es_server_password,
+            max_days,
+            max_indexes,
+            max_sub_index,
+            month_index,
+            LOG_LEVEL
+        )
 
         job = queue.enqueue_call(
             func=ConsolidateIndex.consolidate_index,
