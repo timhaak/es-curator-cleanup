@@ -1,12 +1,13 @@
-from datetime import date, datetime
-from elasticsearch import Elasticsearch
-import re
-from dotenv import load_dotenv, find_dotenv
 import os
+import re
 import sys
+from datetime import date, datetime
+
 from colorama import Fore, Style
-import redis
-from locallib import ConsolidateIndex
+from dotenv import load_dotenv, find_dotenv
+from elasticsearch import Elasticsearch
+
+from locallib.tasks import consolidate_index
 
 load_dotenv(find_dotenv())
 
@@ -142,7 +143,7 @@ def createJob(
         #     month_index
         # ])
 
-        ConsolidateIndex.consolidate_index(
+        consolidate_index.delay(
             es_server_host,
             es_server_port,
             es_server_username,
@@ -154,25 +155,25 @@ def createJob(
             LOG_LEVEL
         )
 
-        job = queue.enqueue_call(
-            func=ConsolidateIndex.consolidate_index,
-            args=(
-                es_server_host,
-                es_server_port,
-                es_server_username,
-                es_server_password,
-                max_days,
-                max_indexes,
-                max_sub_index,
-                month_index,
-                LOG_LEVEL
-            ),
-            timeout=WORKER_TIMEOUT,
-            result_ttl=WORKER_RESULT_TIMEOUT,
-            ttl=WORKER_QUEUE_TIMEOUT
-        )
-
-        print(job.result)
+        # job = queue.enqueue_call(
+        #     func=ConsolidateIndex.consolidate_index,
+        #     args=(
+        #         es_server_host,
+        #         es_server_port,
+        #         es_server_username,
+        #         es_server_password,
+        #         max_days,
+        #         max_indexes,
+        #         max_sub_index,
+        #         month_index,
+        #         LOG_LEVEL
+        #     ),
+        #     timeout=WORKER_TIMEOUT,
+        #     result_ttl=WORKER_RESULT_TIMEOUT,
+        #     ttl=WORKER_QUEUE_TIMEOUT
+        # )
+        #
+        # print(job.result)
 
 
 createJob(

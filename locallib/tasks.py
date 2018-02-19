@@ -1,13 +1,14 @@
-from datetime import date, datetime
-from elasticsearch import Elasticsearch
-import re
-import yaml
-import sys
-from colorama import Fore, Style
-import subprocess
-from dotenv import load_dotenv, find_dotenv
 import os
+import re
+import subprocess
+import sys
+from datetime import date, datetime
+
+import yaml
 from celery import Celery
+from colorama import Fore, Style
+from dotenv import load_dotenv, find_dotenv
+from elasticsearch import Elasticsearch
 
 load_dotenv(find_dotenv())
 
