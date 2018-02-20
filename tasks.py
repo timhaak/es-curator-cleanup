@@ -179,11 +179,11 @@ def consolidate_index(
                     'timeout_override': 300,
                 },
                 'filters': [
-                    {
-                        'filtertype': 'pattern',
-                        'kind': 'regex',
-                        'value': '^' + re.escape(day_index) + '$',
-                    },
+                    # {
+                    #     'filtertype': 'pattern',
+                    #     'kind': 'regex',
+                    #     'value': '^' + re.escape(day_index) + '$',
+                    # },
                     {
                         'filtertype': 'pattern',
                         'kind': 'prefix',
