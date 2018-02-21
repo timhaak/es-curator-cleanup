@@ -52,6 +52,10 @@ def consolidate_index(
     max_indexes=1,
     max_sub_index=-1,
     index_prefix='',
+    index_shards=4,
+    index_replicas=1,
+    reindex_slices=4,
+    reindex_batch_size=4000,
     log_level='INFO'
 ):
     curator_config_file = 'curator_config.yml'
@@ -129,6 +133,12 @@ def consolidate_index(
         data['actions'][index_count] = {
             'description': 'Create target index ' + month_index,
             'action': 'create_index',
+            'extra_settings': {
+                'settings': {
+                    'number_of_shards': index_shards,
+                    'number_of_replicas': index_replicas,
+                }
+            },
             'options': {
                 'disable_action': False,
                 'name': month_index,
@@ -150,10 +160,12 @@ def consolidate_index(
                 'wait_interval': 9,
                 'max_wait': -1,
                 'requests_per_second': -1,
-                'slices': 3,
+                'slices': reindex_slices,
+                'wait_for_completion': True,
                 'request_body': {
                     'source': {
-                        'index': index_list[month_index]
+                        'index': index_list[month_index],
+                        'size': reindex_batch_size
                     },
                     'dest': {
                         'index': month_index
@@ -169,12 +181,13 @@ def consolidate_index(
 
         for day_index in index_list[month_index]:
             data['actions'][index_count] = {
-                'description': 'Delete index ' + day_index +
+                'description': 'Close index ' + day_index +
                                ' moved to ' + month_index,
-                'action': 'delete_indices',
+                'action': 'close',
                 'options': {
                     'disable_action': False,
-                    'continue_if_exception': False,
+                    'continue_if_exception': True,
+                    'delete_aliases': True,
                     'ignore_empty_list': True,
                     'timeout_override': 300,
                 },
