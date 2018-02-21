@@ -133,16 +133,16 @@ def consolidate_index(
         data['actions'][index_count] = {
             'description': 'Create target index ' + month_index,
             'action': 'create_index',
-            'extra_settings': {
-                'settings': {
-                    'number_of_shards': index_shards,
-                    'number_of_replicas': index_replicas,
-                }
-            },
             'options': {
                 'disable_action': False,
                 'name': month_index,
                 'continue_if_exception': True,
+                'extra_settings': {
+                    'settings': {
+                        'number_of_shards': index_shards,
+                        'number_of_replicas': index_replicas,
+                    }
+                },
             }
         }
 
