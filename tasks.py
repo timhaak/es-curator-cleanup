@@ -160,7 +160,6 @@ def consolidate_index(
                 'disable_action': False,
                 'continue_if_exception': True,
                 'ignore_empty_list': True,
-                'timeout': 180,
             },
             'filters': [
                 {
