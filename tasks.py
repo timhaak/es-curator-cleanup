@@ -110,8 +110,7 @@ def consolidate_index(
     index_list = {}
 
     for index in sorted_indexes:
-        match_regular_expression = r"(" + re.escape(index_prefix) + \
-                                   ".*)-(\d+)\.(\d+)\.(\d+)"
+        match_regular_expression = r"(.*)-(\d+)\.(\d+)\.(\d+)"
         regexp = re.compile(match_regular_expression)
         match = regexp.search(index)
         if match:
