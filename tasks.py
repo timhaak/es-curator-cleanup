@@ -202,7 +202,10 @@ def consolidate_index(
                 }
             },
             'filters': [
-                {'filtertype': 'none'}
+                {
+                    'filtertype': 'closed',
+                    'exclude': True
+                },
             ]
         }
 

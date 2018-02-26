@@ -126,7 +126,7 @@ def createJob(
             delta = now - index_date
             if delta.days > max_days:
                 # print(index)
-                month_index = match.group(1)
+                month_index = match.group(1) + '-' + match.group(2) + '.' + match.group(3)
                 if month_index not in index_list:
                     index_list[month_index] = 1
                 else:
