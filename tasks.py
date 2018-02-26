@@ -159,8 +159,9 @@ def consolidate_index(
             'action': 'open',
             'options': {
                 'disable_action': False,
-                'continue_if_exception': False,
+                'continue_if_exception': True,
                 'ignore_empty_list': True,
+                'timeout': 180,
             },
             'filters': [
                 {
@@ -224,11 +225,6 @@ def consolidate_index(
                     'timeout_override': 300,
                 },
                 'filters': [
-                    # {
-                    #     'filtertype': 'pattern',
-                    #     'kind': 'regex',
-                    #     'value': '^' + re.escape(day_index) + '$',
-                    # },
                     {
                         'filtertype': 'pattern',
                         'kind': 'suffix',
