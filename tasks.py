@@ -37,6 +37,8 @@ app.conf.update(
     result_expires=WORKER_RESULT_TIMEOUT,
     worker_max_tasks_per_child=1,
     worker_prefetch_multiplier=1,
+    event_queue_expires=240,
+    event_queue_ttl=30,
 )
 
 app.conf.broker_transport_options = {
