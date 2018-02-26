@@ -165,8 +165,12 @@ def consolidate_index(
             'filters': [
                 {
                     'filtertype': 'pattern',
-                    'kind': 'prefix',
+                    'kind': 'suffix',
                     'value': month_index,
+                },
+                {
+                    'filtertype': 'opened',
+                    'exclude': True
                 }
             ]
         }
@@ -224,7 +228,7 @@ def consolidate_index(
                     # },
                     {
                         'filtertype': 'pattern',
-                        'kind': 'prefix',
+                        'kind': 'suffix',
                         'value': day_index,
                     }
                 ]
