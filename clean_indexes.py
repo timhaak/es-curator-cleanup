@@ -12,7 +12,6 @@ from tasks import consolidate_index
 load_dotenv(find_dotenv())
 
 FILTER_PREFIX = os.getenv("FILTER_PREFIX", "")
-LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
 
 MAX_DAYS = int(os.getenv("MAX_DAYS", 3))
 
@@ -174,28 +173,8 @@ def createJob(
             index_replicas,
             reindex_slices,
             reindex_batch_size,
-            LOG_LEVEL
+            WORKER_LOGGING_LEVEL
         )
-
-        # job = queue.enqueue_call(
-        #     func=ConsolidateIndex.consolidate_index,
-        #     args=(
-        #         es_server_host,
-        #         es_server_port,
-        #         es_server_username,
-        #         es_server_password,
-        #         max_days,
-        #         max_indexes,
-        #         max_sub_index,
-        #         month_index,
-        #         LOG_LEVEL
-        #     ),
-        #     timeout=WORKER_TIMEOUT,
-        #     result_ttl=WORKER_RESULT_TIMEOUT,
-        #     ttl=WORKER_QUEUE_TIMEOUT
-        # )
-        #
-        # print(job.result)
 
 
 createJob(
