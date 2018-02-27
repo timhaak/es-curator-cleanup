@@ -153,24 +153,25 @@ def consolidate_index(
         }
 
         index_count += 1
-        data['actions'][index_count] = {
-            'description': 'Make sure target index ' + month_index + ' is open just in case',
-            'action': 'open',
-            'options': {
-                'disable_action': False,
-                'continue_if_exception': True,
-                'ignore_empty_list': True,
-            },
-            'filters': [
-                {
-                    'filtertype': 'pattern',
-                    'kind': 'regex',
-                    'value': '^' + re.escape(month_index) + '$',
-                }
-            ]
-        }
 
-        index_count += 1
+        # data['actions'][index_count] = {
+        #     'description': 'Make sure target index ' + month_index + ' is open just in case',
+        #     'action': 'open',
+        #     'options': {
+        #         'disable_action': False,
+        #         'continue_if_exception': True,
+        #         'ignore_empty_list': True,
+        #     },
+        #     'filters': [
+        #         {
+        #             'filtertype': 'pattern',
+        #             'kind': 'regex',
+        #             'value': '^' + re.escape(month_index) + '$',
+        #         }
+        #     ]
+        # }
+        #
+        # index_count += 1
 
         data['actions'][index_count] = {
             'description': '\nReindex \n\t' + str(index_list[month_index]) +
