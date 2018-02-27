@@ -35,7 +35,6 @@ app.conf.update(
     enable_utc=True,
     result_backend=redis_url,
     result_expires=WORKER_RESULT_TIMEOUT,
-    worker_max_tasks_per_child=2,
     worker_prefetch_multiplier=2,
     event_queue_expires=240,
     # event_queue_ttl=30,
