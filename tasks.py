@@ -283,6 +283,13 @@ def consolidate_index(
         time.sleep(5)
         print("Program still running: Pid = " + process.pid)
 
+    output = process.stdout.readline()
+    err = process.stderr.readline()
+    if output:
+        print(output.strip())
+    if err:
+        print(output.strip())
+
     print("\n\n\n\nProgram ended\n\n\n\n")
     process.wait()
     rc = process.poll()
