@@ -26,7 +26,6 @@ WORKER_LOGGING_LEVEL = os.getenv("WORKER_LOGGING_LEVEL", "INFO")
 JOB_QUEUE_NAME = os.getenv("JOB_QUEUE_NAME", "curator")
 
 redis_url = "redis://" + REDIS_HOST + ":" + REDIS_PORT + "/" + REDIS_DB
-redis_url_backend = "redis://" + REDIS_HOST + ":" + REDIS_PORT + "/1"
 
 app = Celery(JOB_QUEUE_NAME, backend=redis_url, broker=redis_url)
 
@@ -36,7 +35,7 @@ app.conf.update(
     result_serializer='json',
     timezone='Africa/Johannesburg',
     enable_utc=True,
-    result_backend=redis_url_backend,
+    result_backend=redis_url,
     result_expires=WORKER_RESULT_TIMEOUT,
     worker_prefetch_multiplier=5,
     event_queue_expires=5,
@@ -271,7 +270,7 @@ def consolidate_index(
         stderr=subprocess.PIPE,
     )
 
-    while True:
+    while not process.poll():
         output = process.stdout.readline()
         err = process.stderr.readline()
         if process.poll() is not None:
@@ -279,7 +278,7 @@ def consolidate_index(
         if output:
             print(output.strip())
         if err:
-            print(output.strip())
+            print(err.strip())
         time.sleep(5)
         print("Program still running: Pid = " + process.pid)
 
