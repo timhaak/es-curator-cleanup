@@ -26,7 +26,7 @@ WORKER_LOGGING_LEVEL = os.getenv("WORKER_LOGGING_LEVEL", "INFO")
 JOB_QUEUE_NAME = os.getenv("JOB_QUEUE_NAME", "curator")
 
 redis_url = "redis://" + REDIS_HOST + ":" + REDIS_PORT + "/" + REDIS_DB
-redis_url_backend = "redis://" + REDIS_HOST + ":" + REDIS_PORT + "/" + 1
+redis_url_backend = "redis://" + REDIS_HOST + ":" + REDIS_PORT + "/1"
 
 app = Celery(JOB_QUEUE_NAME, backend=redis_url, broker=redis_url)
 
