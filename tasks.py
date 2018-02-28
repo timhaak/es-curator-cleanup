@@ -272,10 +272,14 @@ def consolidate_index(
     )
 
     while True:
-        output = process.stdout.readline()
-        if output == '' and process.poll() is not None:
+        # output = process.stdout.readline()
+        # err = process.stderr.readline()
+        output, err = process.communicate()
+        if process.poll() is not None:
             break
         if output:
+            print(output.strip())
+        if err:
             print(output.strip())
         time.sleep(5)
         print("Program still running: Pid = " + process.pid)
