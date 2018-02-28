@@ -272,9 +272,8 @@ def consolidate_index(
     )
 
     while True:
-        # output = process.stdout.readline()
-        # err = process.stderr.readline()
-        output, err = process.communicate()
+        output = process.stdout.readline()
+        err = process.stderr.readline()
         if process.poll() is not None:
             break
         if output:
