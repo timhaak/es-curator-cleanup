@@ -2,6 +2,8 @@ import os
 import re
 import subprocess
 import sys
+import time
+
 from datetime import date, datetime
 
 import yaml
@@ -24,6 +26,7 @@ WORKER_LOGGING_LEVEL = os.getenv("WORKER_LOGGING_LEVEL", "INFO")
 JOB_QUEUE_NAME = os.getenv("JOB_QUEUE_NAME", "curator")
 
 redis_url = "redis://" + REDIS_HOST + ":" + REDIS_PORT + "/" + REDIS_DB
+redis_url_backend = "redis://" + REDIS_HOST + ":" + REDIS_PORT + "/" + 1
 
 app = Celery(JOB_QUEUE_NAME, backend=redis_url, broker=redis_url)
 
@@ -33,10 +36,10 @@ app.conf.update(
     result_serializer='json',
     timezone='Africa/Johannesburg',
     enable_utc=True,
-    result_backend=redis_url,
+    result_backend=redis_url_backend,
     result_expires=WORKER_RESULT_TIMEOUT,
-    worker_prefetch_multiplier=2,
-    event_queue_expires=240,
+    worker_prefetch_multiplier=5,
+    event_queue_expires=5,
     # event_queue_ttl=30,
 )
 
@@ -264,7 +267,8 @@ def consolidate_index(
     process = subprocess.Popen(
         '/usr/local/bin/curator --config /es-curator-cleanup/curator_config.yml /es-curator-cleanup/curator_action.yml',
         shell=True,
-        stdout=subprocess.PIPE
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
     )
 
     while True:
@@ -273,5 +277,11 @@ def consolidate_index(
             break
         if output:
             print(output.strip())
+        time.sleep(5)
+        print("Program still running: Pid = " + process.pid)
+
+    print("\n\n\n\nProgram ended\n\n\n\n")
+    process.wait()
     rc = process.poll()
+    print(rc)
     return rc
